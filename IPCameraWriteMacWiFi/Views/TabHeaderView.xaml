@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="IPCameraWriteMacWiFi.Views.TabHeaderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:IPCameraWriteMacWiFi.Views"
+             mc:Ignorable="d" 
+             Height="50" d:DesignWidth="220" Background="White">
+
+    <UserControl.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Margin" Value="50,0,0,0"/>
+            <Setter Property="Padding" Value="0,12,0,0"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="FontWeight" Value="Bold" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Image">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=THM.Header}" Value="RUN ALL">
+                    <Setter Property="Source" Value="/Asset/Image/run.png"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=THM.Header}" Value="SETTING">
+                    <Setter Property="Source" Value="/Asset/Image/setting.png"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=THM.Header}" Value="LOG">
+                    <Setter Property="Source" Value="/Asset/Image/log.png"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=THM.Header}" Value="HELP">
+                    <Setter Property="Source" Value="/Asset/Image/help.png"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=THM.Header}" Value="ABOUT">
+                    <Setter Property="Source" Value="/Asset/Image/about.png"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Border MouseDown="Border_MouseDown" Margin="5,2,5,0" BorderBrush="{StaticResource color_border}" BorderThickness="0,0,0,1">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Setter Property="Background" Value="White"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=THM.isClicked}" Value="true">
+                        <Setter Property="Background" Value="{StaticResource color_click}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+        <Grid Margin="5,0,0,0">
+            <Image />
+            <Label Content="{Binding Path=THM.Header}"/>
+        </Grid>
+    </Border>
+
+
+</UserControl>

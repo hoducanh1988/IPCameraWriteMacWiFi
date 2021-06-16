@@ -1,0 +1,476 @@
+﻿<UserControl x:Class="IPCameraWriteMacWiFi.Views.RunAllView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:IPCameraWriteMacWiFi.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Background="White">
+
+    <UserControl.Resources>
+        <local:BrushColorConverter x:Key="BConverter"></local:BrushColorConverter>
+    </UserControl.Resources>
+    
+    <Grid>
+        
+        <TabControl Margin="0,0,5,0" TabStripPlacement="Bottom">
+            <TabControl.Resources>
+                
+                <Style TargetType="{x:Type TabPanel}">
+                    <Setter Property="HorizontalAlignment" Value="Left" />
+                </Style>
+
+                <Style TargetType="{x:Type TabItem}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type TabItem}">
+                                <Grid>
+                                    <Border Name="Border" Margin="0,0,-4,0" BorderThickness="1,1,1,1" CornerRadius="2,12,0,0" >
+                                        <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" Margin="12,2,12,2" RecognizesAccessKey="True"/>
+                                    </Border>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Panel.ZIndex" Value="100"/>
+                                        <Setter TargetName="Border" Property="Background" Value="#43d854" />
+                                        <Setter TargetName="Border" Property="BorderThickness" Value="1,1,1,0" />
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter TargetName="Border" Property="Background" Value="#FFFFFF" />
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="Orange" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <Style TargetType="Label" x:Key="label_log_header">
+                    <Setter Property="FontSize" Value="15"/>
+                </Style>
+
+            </TabControl.Resources>
+
+            <TabItem>
+                <TabItem.Header>
+                    <Label Style="{StaticResource label_log_header}" Content="Log Item"/>
+                </TabItem.Header>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="215"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Margin="0,0,5,0">
+                        <Button Command="{Binding StartCommand}" Content="{Binding Path=RAM.buttonContent}">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Margin" Value="0,10,0,0"/>
+                                    <Setter Property="Width" Value="150"/>
+                                    <Setter Property="Height" Value="40"/>
+                                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                                    <Setter Property="FontSize" Value="20"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=RAM.buttonContent}" Value="Start">
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <Label FontWeight="SemiBold" FontSize="20" Foreground="{Binding Path=RAM.instructionText, Converter={StaticResource BConverter}}" Content="{Binding Path=RAM.instructionText}">
+                            
+                        </Label>
+
+                        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding collectionResult}"
+                              Background="White"
+                              CanUserAddRows="False" CanUserDeleteRows="False"
+                              CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" CanUserReorderColumns="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                              GridLinesVisibility="None"
+                              HeadersVisibility="Column"
+                              BorderThickness="0,0,0,0"
+                              SelectionUnit="FullRow" SelectionMode="Extended">
+
+                            <DataGrid.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                                    <Setter Property="BorderBrush" Value="#FFB3B3B3"/>
+                                    <Setter Property="FontSize" Value="13"/>
+                                    <Setter Property="FontWeight" Value="Normal"/>
+                                    <Setter Property="Height" Value="22"/>
+                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                </Style>
+                            </DataGrid.CellStyle>
+
+                            <DataGrid.ColumnHeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="FontSize" Value="13"/>
+                                    <Setter Property="Height" Value="40"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="BorderBrush" Value="#FFB3B3B3"/>
+                                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                    <Setter Property="Padding" Value="3,0,0,0"/>
+                                </Style>
+                            </DataGrid.ColumnHeaderStyle>
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Các bước thực hiện" Binding="{Binding Name}" Width="1.7*"/>
+                                <DataGridTextColumn Header="Giá trị" Binding="{Binding Value}" Width="2.5*"/>
+                                <DataGridTextColumn Header="Trạng thái" Binding="{Binding Result}" Width="0.9*" FontWeight="SemiBold">
+                                    <DataGridTextColumn.CellStyle>
+                                        <Style TargetType="DataGridCell">
+                                            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                                            <Setter Property="BorderBrush" Value="#FFB3B3B3"/>
+                                            <Setter Property="FontSize" Value="15"/>
+                                            <Setter Property="FontWeight" Value="Normal"/>
+                                            <Setter Property="Height" Value="22"/>
+                                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                            <Setter Property="Foreground" Value="Black"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=Result}" Value="Waiting...">
+                                                    <Setter Property="Foreground" Value="Orange"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Path=Result}" Value="Passed">
+                                                    <Setter Property="Foreground" Value="Lime"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Path=Result}" Value="Failed">
+                                                    <Setter Property="Foreground" Value="Red"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGridTextColumn.CellStyle>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="Thời gian(ms)" Binding="{Binding totalTime}" Width="*"/>
+                            </DataGrid.Columns>
+
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow">
+                                    <Setter Property="Foreground" Value="Black"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Result}" Value="Failed">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.RowStyle>
+                        </DataGrid>
+
+                        <WrapPanel>
+                            <Label FontSize="15" Content="Total time:"/>
+                            <Label FontSize="15" Content="{Binding Path=RAM.totalTime}"/>
+                        </WrapPanel>
+
+                        <Label Margin="0,-5,0,0" FontSize="15" Content="Total result:"/>
+                        <Label Content="{Binding Path=RAM.totalResult}">
+                            <Label.Style>
+                                <Style TargetType="Label">
+                                    <Setter Property="Margin" Value="0,-10,0,0"/>
+                                    <Setter Property="FontSize" Value="35"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=RAM.totalResult}" Value="Waiting...">
+                                            <Setter Property="Foreground" Value="Orange"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=RAM.totalResult}" Value="Passed">
+                                            <Setter Property="Foreground" Value="Lime"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=RAM.totalResult}" Value="Failed">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Label.Style>
+                        </Label>
+                        <WrapPanel Margin="0,-10,0,0">
+                            <Label FontSize="15" Content="UID:"/>
+                            <Label FontSize="15" FontWeight="SemiBold" Content="{Binding Path=RAM.UID}"/>
+                        </WrapPanel>
+                        <WrapPanel Margin="0,-10,0,0">
+                            <Label FontSize="15" Content="Mac WiFi:"/>
+                            <Label FontSize="15" FontWeight="SemiBold" Content="{Binding Path=RAM.macAddress}"/>
+                        </WrapPanel>
+
+                    </StackPanel>
+
+                    <Border BorderBrush="{StaticResource color_border}" BorderThickness="1,0,0,0" Grid.Column="1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="100"/>
+                            </Grid.RowDefinitions>
+
+                            <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding collectionMac}"
+                              Background="White"
+                              CanUserAddRows="False" CanUserDeleteRows="False"
+                              CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" CanUserReorderColumns="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                              GridLinesVisibility="None"
+                              HeadersVisibility="Column"
+                              BorderThickness="0,0,0,0"
+                              BorderBrush="{StaticResource color_border}"
+                              SelectionUnit="FullRow" SelectionMode="Extended">
+
+                                <DataGrid.CellStyle>
+                                    <Style TargetType="DataGridCell">
+                                        <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                                        <Setter Property="BorderBrush" Value="#FFB3B3B3"/>
+                                        <Setter Property="FontSize" Value="15"/>
+                                        <Setter Property="FontWeight" Value="Normal"/>
+                                        <Setter Property="Height" Value="22"/>
+                                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGrid.CellStyle>
+
+                                <DataGrid.ColumnHeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="FontSize" Value="15"/>
+                                        <Setter Property="Height" Value="40"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                        <Setter Property="BorderBrush" Value="#FFB3B3B3"/>
+                                        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                        <Setter Property="Padding" Value="3,0,0,0"/>
+                                    </Style>
+                                </DataGrid.ColumnHeaderStyle>
+
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="New Mac" Binding="{Binding macAddress}" Width="*"/>
+                                    <DataGridTextColumn Header="DEC" Binding="{Binding macDEC}" Width="80"/>
+                                </DataGrid.Columns>
+
+                                <DataGrid.RowStyle>
+                                    <Style TargetType="DataGridRow">
+                                        <Setter Property="Foreground" Value="Black"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Result}" Value="Failed">
+                                                <Setter Property="Foreground" Value="Red"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGrid.RowStyle>
+                            </DataGrid>
+
+                            <StackPanel Grid.Row="1">
+                                <WrapPanel>
+                                    <Label Margin="0,-5,0,0" FontSize="15" Content="Mac start : "/>
+                                    <Label Margin="0,-5,0,0" FontSize="15" Content="{Binding Path=RAM.macStart}"/>
+                                </WrapPanel>
+                                <WrapPanel>
+                                    <Label Margin="0,-5,0,0" FontSize="15"  Content="Mac end : "/>
+                                    <Label Margin="0,-5,0,0" FontSize="15" Content="{Binding Path=RAM.macEnd}"/>
+                                </WrapPanel>
+                                <WrapPanel>
+                                    <Label Margin="0,-5,0,0" FontSize="15"  Content="Current : "/>
+                                    <Label Margin="0,-5,0,0" FontSize="15" Content="{Binding Path=RAM.macCurrent}"/>
+                                </WrapPanel>
+                                <WrapPanel>
+                                    <Label Margin="0,-5,0,0" FontSize="15"  Content="Remain : "/>
+                                    <Label Margin="0,-5,0,0" FontSize="15" Content="{Binding Path=RAM.macRemain}"/>
+                                </WrapPanel>
+                            </StackPanel>
+                            
+                        </Grid>
+                    </Border>
+
+                </Grid>
+                
+                
+            </TabItem>
+            
+            
+            <TabItem>
+                <TabItem.Header>
+                    <Label Style="{StaticResource label_log_header}" Content="Log System"/>
+                </TabItem.Header>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <WrapPanel Margin="0,10,0,0">
+                        <Label FontSize="15" Content="Nhập mã uid: "/>
+                        <TextBox FontWeight="SemiBold" FontSize="15" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Padding="5,0,0,0" Width="250" Text="{Binding Path=RAM.systemUID}"/>
+                        <Button Command="{Binding SearchLogSystemCommand}" FontSize="15" FontWeight="SemiBold" Margin="10,0,0,0" Width="100" Content="Search"/>
+                    </WrapPanel>
+                    
+                    <ScrollViewer Grid.Row="1" x:Name="Scr_LogSystem">
+                        <RichTextBox  FontSize="13" FontWeight="Normal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                            <FlowDocument>
+                                <Paragraph>
+                                    <Run Text="{Binding Path=RAM.logSystem,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                </Paragraph>
+                            </FlowDocument>
+                        </RichTextBox>
+                    </ScrollViewer>
+                </Grid>
+                
+            </TabItem>
+
+
+            <TabItem>
+                <TabItem.Header>
+                    <Label Style="{StaticResource label_log_header}" Content="Log Telnet"/>
+                </TabItem.Header>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <WrapPanel Margin="0,10,0,0">
+                        <Label FontSize="15" Content="Nhập mã uid: "/>
+                        <TextBox FontWeight="SemiBold" FontSize="15" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Padding="5,0,0,0" Width="250" Text="{Binding Path=RAM.telnetUID}"/>
+                        <Button Command="{Binding SearchLogTelnetCommand}" FontSize="15" FontWeight="SemiBold" Margin="10,0,0,0" Width="100" Content="Search"/>
+                    </WrapPanel>
+
+                    <ScrollViewer Grid.Row="1" x:Name="Scr_LogTelnet">
+                        <RichTextBox  FontSize="13" FontWeight="Normal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                            <FlowDocument>
+                                <Paragraph>
+                                    <Run Text="{Binding Path=RAM.logTelnet,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                </Paragraph>
+                            </FlowDocument>
+                        </RichTextBox>
+                    </ScrollViewer>
+                </Grid>
+
+            </TabItem>
+
+            <TabItem>
+                <TabItem.Header>
+                    <Label Style="{StaticResource label_log_header}" Content="Log Data"/>
+                </TabItem.Header>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <WrapPanel Margin="0,10,0,0">
+                        <Label FontSize="15" Content="Nhập mã uid: "/>
+                        <TextBox FontWeight="SemiBold" FontSize="15" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Padding="5,0,0,0" Width="250" Text="{Binding Path=RAM.totalUID}"/>
+                        <Button Command="{Binding SearchLogTotalCommand}" FontSize="15" FontWeight="SemiBold" Margin="10,0,0,0" Width="100" Content="Search"/>
+                    </WrapPanel>
+
+                    <DataGrid Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding collectionTotal}"
+                              Background="White"
+                              CanUserAddRows="False" CanUserDeleteRows="False"
+                              CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" CanUserReorderColumns="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                              GridLinesVisibility="None"
+                              HeadersVisibility="Column"
+                              BorderThickness="0,0,0,0"
+                              SelectionUnit="FullRow" SelectionMode="Extended">
+
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                                <Setter Property="BorderBrush" Value="#FFB3B3B3"/>
+                                <Setter Property="FontSize" Value="13"/>
+                                <Setter Property="FontWeight" Value="Normal"/>
+                                <Setter Property="Height" Value="22"/>
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGrid.CellStyle>
+
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="FontSize" Value="13"/>
+                                <Setter Property="Height" Value="40"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="BorderBrush" Value="#FFB3B3B3"/>
+                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                <Setter Property="Padding" Value="3,0,0,0"/>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding ID}" Width="Auto"/>
+                            <DataGridTextColumn Header="UID" Binding="{Binding UID}" Width="Auto"/>
+                            <DataGridTextColumn Header="Mac" Binding="{Binding Mac}" Width="Auto"/>
+                            <DataGridTextColumn Header="Login" Binding="{Binding Login}" Width="Auto"/>
+                            <DataGridTextColumn Header="GetFirmware" Binding="{Binding GetFirmware}" Width="Auto"/>
+                            <DataGridTextColumn Header="GetUID" Binding="{Binding GetUID}" Width="Auto"/>
+                            <DataGridTextColumn Header="GetMac" Binding="{Binding GetMac}" Width="Auto"/>
+                            <DataGridTextColumn Header="SetMac" Binding="{Binding SetMac}" Width="Auto"/>
+                            <DataGridTextColumn Header="VerifyMac" Binding="{Binding VerifyMac}" Width="Auto"/>
+                            <DataGridTextColumn Header="TotalTime" Binding="{Binding TotalTime}" Width="Auto"/>
+                            <DataGridTextColumn Header="TotalResult" Binding="{Binding TotalResult}" Width="Auto"/>
+                            <DataGridTextColumn Header="DateTimeCreated" Binding="{Binding DateTimeCreated}" Width="Auto"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    
+                </Grid>
+
+            </TabItem>
+
+            <TabItem>
+                <TabItem.Header>
+                    <Label Style="{StaticResource label_log_header}" Content="Log Mac"/>
+                </TabItem.Header>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <WrapPanel Margin="0,10,0,0">
+                        <Label FontSize="15" Content="Nhập mã uid: "/>
+                        <TextBox FontWeight="SemiBold" FontSize="15" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Padding="5,0,0,0" Width="250" Text="{Binding Path=RAM.macUID}"/>
+                        <Button Command="{Binding SearchLogMacCommand}" FontSize="15" FontWeight="SemiBold" Margin="10,0,0,0" Width="100" Content="Search"/>
+                    </WrapPanel>
+
+                    <DataGrid Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding collectionWrited}"
+                              Background="White"
+                              CanUserAddRows="False" CanUserDeleteRows="False"
+                              CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" CanUserReorderColumns="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                              GridLinesVisibility="None"
+                              HeadersVisibility="Column"
+                              BorderThickness="0,0,0,0"
+                              SelectionUnit="FullRow" SelectionMode="Extended">
+
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                                <Setter Property="BorderBrush" Value="#FFB3B3B3"/>
+                                <Setter Property="FontSize" Value="13"/>
+                                <Setter Property="FontWeight" Value="Normal"/>
+                                <Setter Property="Height" Value="22"/>
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGrid.CellStyle>
+
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="FontSize" Value="13"/>
+                                <Setter Property="Height" Value="40"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="BorderBrush" Value="#FFB3B3B3"/>
+                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                <Setter Property="Padding" Value="3,0,0,0"/>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding ID}" Width="Auto"/>
+                            <DataGridTextColumn Header="Mac" Binding="{Binding Mac}" Width="Auto"/>
+                            <DataGridTextColumn Header="UID" Binding="{Binding UID}" Width="Auto"/>
+                            <DataGridTextColumn Header="DateTimeWrited" Binding="{Binding DateTimeWrited}" Width="Auto"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                </Grid>
+
+            </TabItem>
+
+        </TabControl>
+
+    </Grid>
+</UserControl>

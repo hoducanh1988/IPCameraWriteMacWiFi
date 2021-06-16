@@ -1,0 +1,114 @@
+﻿<UserControl x:Class="IPCameraWriteMacWiFi.Views.SettingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:IPCameraWriteMacWiFi.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Background="White">
+
+    <UserControl.Resources>
+
+        <Style TargetType="Label" x:Key="label_legend">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        
+        <Style TargetType="Label" x:Key="label_title">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Width" Value="170"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="10,0,0,0"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="170,0,0,0"/>
+            <Setter Property="BorderBrush" Value="{StaticResource color_border}"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="10,0,0,0"/>
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="true">
+                    <Setter Property="Background" Value="{StaticResource color_mouseover}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+    </UserControl.Resources>
+    
+    
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer>
+            <StackPanel Margin="0,0,10,0">
+                <!--ONT-->
+                <Label Style="{StaticResource label_legend}" Content="Cấu hình tham số ONT DHCP Server :"/>
+                <Grid>
+                    <Label Style="{StaticResource label_title}" Content="IP Address"/>
+                    <TextBox Text="{Binding Path=SM.ontIP}"/>
+                </Grid>
+                <Grid>
+                    <Label Style="{StaticResource label_title}" Content="Telnet user"/>
+                    <TextBox Text="{Binding Path=SM.ontUser}"/>
+                </Grid>
+                <Grid>
+                    <Label Style="{StaticResource label_title}" Content="Telnet password"/>
+                    <TextBox Text="{Binding Path=SM.ontPassword}"/>
+                </Grid>
+                
+                <!--CAMERA-->
+                <Label Style="{StaticResource label_legend}" Margin="0,20,0,0" Content="Cấu hình tham số OEM IP Camera :"/>
+                <Grid>
+                    <Label Style="{StaticResource label_title}" Content="IP Address"/>
+                    <TextBox Text="{Binding Path=SM.ipAddress}"/>
+                </Grid>
+                <Grid>
+                    <Label Style="{StaticResource label_title}" Content="Telnet user"/>
+                    <TextBox Text="{Binding Path=SM.telnetUser}"/>
+                </Grid>
+                <Grid>
+                    <Label Style="{StaticResource label_title}" Content="Telnet password"/>
+                    <TextBox Text="{Binding Path=SM.telnetPassword}"/>
+                </Grid>
+                <Grid>
+                    <Label Style="{StaticResource label_title}" Content="Firmware version"/>
+                    <TextBox Text="{Binding Path=SM.firmwareVersion}"/>
+                </Grid>
+
+                <!--MAC-->
+                <Label Style="{StaticResource label_legend}" Margin="0,20,0,0" Content="Cấu hình dải địa chỉ mac sử dụng để ghi vào camera :"/>
+                <Grid>
+                    <Label Style="{StaticResource label_title}" Content="VNPTT Mac header"/>
+                    <TextBox Text="{Binding Path=SM.macHeader}"/>
+                </Grid>
+                <Grid>
+                    <Label Style="{StaticResource label_title}" Content="Địa chỉ bắt đầu (DEC)"/>
+                    <TextBox Text="{Binding Path=SM.macStart}"/>
+                </Grid>
+                <Grid>
+                    <Label Style="{StaticResource label_title}" Content="Địa chỉ kết thúc (DEC)"/>
+                    <TextBox Text="{Binding Path=SM.macEnd}" Width="150" HorizontalAlignment="Left"/>
+                    <Label Style="{StaticResource label_title}" FontWeight="SemiBold" Foreground="Red" Margin="350,0,0,0" Width="400" Content="{Binding Path=SM.macEndRecommend}"/>
+                </Grid>
+                <Grid>
+                    <Label Style="{StaticResource label_title}" Content="Bước nhảy"/>
+                    <TextBox Text="{Binding Path=SM.macStep}"/>
+                </Grid>
+                <Label Content="" Margin="0,0,0,30"/>
+
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <Button Command="{Binding SaveCommand}" FontSize="17" FontWeight="SemiBold" Grid.Row="1" Content="Save Setting"/>
+
+    </Grid>
+    
+</UserControl>

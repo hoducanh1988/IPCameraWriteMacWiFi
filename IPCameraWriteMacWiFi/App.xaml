@@ -1,0 +1,13 @@
+﻿<Application x:Class="IPCameraWriteMacWiFi.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:IPCameraWriteMacWiFi"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <SolidColorBrush Color="#AAAAAA" x:Key="color_border"/>
+            <SolidColorBrush Color="#fdffc2" x:Key="color_mouseover"/>
+            <SolidColorBrush Color="#43d854" x:Key="color_click"/>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

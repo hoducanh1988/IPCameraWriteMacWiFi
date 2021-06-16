@@ -1,0 +1,14 @@
+﻿<SettingModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ontIP>192.168.1.1</ontIP>
+  <ontUser>admin</ontUser>
+  <ontPassword>VnT3ch@dm1n</ontPassword>
+  <ipAddress>192.168.1.2</ipAddress>
+  <telnetUser>root</telnetUser>
+  <telnetPassword>rt123456</telnetPassword>
+  <firmwareVersion>6.0.33</firmwareVersion>
+  <macHeader>D49AA0</macHeader>
+  <macEndRecommend />
+  <macStart>1</macStart>
+  <macEnd>10</macEnd>
+  <macStep>1</macStep>
+</SettingModel>
